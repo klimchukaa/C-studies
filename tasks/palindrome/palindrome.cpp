@@ -1,7 +1,7 @@
 #include "palindrome.h"
 
 bool IsPalindrome(const std::string& str) {
-    int64_t n = str.size();
+    size_t n = str.size();
     int64_t left_it = 0;
     int64_t right_it = n - 1;
     while (left_it < right_it) {
