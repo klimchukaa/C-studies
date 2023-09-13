@@ -4,7 +4,7 @@ int64_t Gcd(int64_t a, int64_t b) {
     if (b == 0) {
         return a;
     }
-    return gcd(b, a % b);
+    return Gcd(b, a % b);
 }
 
 int64_t ReduceFraction(int64_t numerator, int64_t denominator) {
