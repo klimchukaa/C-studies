@@ -2,13 +2,22 @@
 
 const int64_t MAX_ASCII = 126;
 const int64_t MIN_ASCII = 33;
+const size_t MIN_LENGTH = 8;
+const size_t MAX_LENGTH = 14;
 
 bool ValidatePassword(const std::string& password) {
+    size_t length = password.size();
+    if (length < MIN_LENGTH) {
+        return false;
+    }
+    if (length > MAX_LENGTH) {
+        return false;
+    }
     int64_t has_lower = 0;
     int64_t has_upper = 0;
     int64_t has_digit = 0;
     int64_t has_special = 0;
-    for (size_t i = 0; i < password.size(); ++i) {
+    for (size_t i = 0; i < length; ++i) {
         if (password[i] < MIN_ASCII || MAX_ASCII < password[i]) {
             return false;
         }
