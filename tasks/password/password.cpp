@@ -8,7 +8,7 @@ bool ValidatePassword(const std::string& password) {
     int64_t has_upper = 0;
     int64_t has_digit = 0;
     int64_t has_special = 0;
-    for (size_t i = 0; i < s.size(); ++i) {
+    for (size_t i = 0; i < password.size(); ++i) {
         if (password[i] < MIN_ASCII || MAX_ASCII < password[i]) {
             return false;
         }
