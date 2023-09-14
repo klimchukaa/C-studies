@@ -3,7 +3,7 @@
 bool IsPalindrome(const std::string& str) {
     size_t n = str.size();
     int64_t left_it = 0;
-    int64_t right_it = n - 1;
+    int64_t right_it = static_cast<int64_t>(n) - 1;
     while (left_it < right_it) {
         if (str[left_it] == ' ') {
             ++left_it;
