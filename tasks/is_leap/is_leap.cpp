@@ -15,4 +15,3 @@ bool IsLeap(int year) {
     }
     return false;
 }
-
