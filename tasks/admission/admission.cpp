@@ -10,7 +10,7 @@ bool CmpByScore(const Applicant& a, const Applicant& b) {
 
 bool CmpByName(const Student* a, const Student* b) {
     return std::tie(a->name, a->birth_date.year, a->birth_date.month, a->birth_date.day) < 
-                std::tie(b->name, b->birth_date.year, b->birth_date.month, b->birth_date.day);
+           std::tie(b->name, b->birth_date.year, b->birth_date.month, b->birth_date.day);
 }
 
 AdmissionTable FillUniversities(const std::vector<University>& universities, const std::vector<Applicant>& applicants) {
@@ -21,9 +21,9 @@ AdmissionTable FillUniversities(const std::vector<University>& universities, con
     for (size_t i = 0; i < universities.size(); ++i) {
         available_places[universities[i].name] = universities[i].max_students;
     }
-    
     for (size_t i = 0; i < universities.size(); ++i) {
-        std::sort(admission_table[universities[i].name].begin(), admission_table[universities[i].name].end(), CmpByName);
+        std::sort(admission_table[universities[i].name].begin(), admission_table[universities[i].name].end(),
+                  CmpByName);
     }
     return admission_table;
 }
