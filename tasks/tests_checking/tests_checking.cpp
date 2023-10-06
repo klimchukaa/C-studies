@@ -1,5 +1,6 @@
 #include "tests_checking.h"
 #include <string_view>
+#include <algorithm>
 
 std::vector<std::string> StudentsOrder(const std::vector<StudentAction>& student_actions,
                                        const std::vector<size_t>& queries) {
@@ -13,7 +14,8 @@ std::vector<std::string> StudentsOrder(const std::vector<StudentAction>& student
         }
     }
     std::vector<std::string> order;
-    for (size_t i = top.size() - 1; i >= 0; --i) {
+    std::reverse(top.begin(), top.end());
+    for (size_t i = 0; i < top.size(); ++i) {
         order.push_back(top[i]);
     }
     for (size_t i = 0; i < bottom.size(); ++i) {
