@@ -13,7 +13,6 @@ AdmissionTable FillUniversities(const std::vector<University>& universities, con
     AdmissionTable admission_table;
     std::unordered_map<std::string, size_t> available_places;
     for (size_t i = 0; i < universities.size(); ++i) {
-        admission_table.emplace(universities[i].name);
         available_places[universities[i].name] = universities[i].max_students;
     }
     for (size_t i = 0; i < applicants_sorted.size(); ++i) {
