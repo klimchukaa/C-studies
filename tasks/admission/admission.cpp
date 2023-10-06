@@ -9,7 +9,7 @@ bool CmpByScore(const Applicant& a, const Applicant& b) {
 }
 
 bool CmpByName(const Student* a, const Student* b) {
-    return std::tie(a->name, a->birth_date.year, a->birth_date.month, a->birth_date.day) < 
+    return std::tie(a->name, a->birth_date.year, a->birth_date.month, a->birth_date.day) <
            std::tie(b->name, b->birth_date.year, b->birth_date.month, b->birth_date.day);
 }
 
