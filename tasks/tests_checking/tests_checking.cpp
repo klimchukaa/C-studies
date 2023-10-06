@@ -3,7 +3,8 @@
 
 std::vector<std::string> StudentsOrder(const std::vector<StudentAction>& student_actions,
                                        const std::vector<size_t>& queries) {
-    std::vector<std::string> top, bottom;
+    std::vector<std::string> top;
+    std::vector<std::string> bottom;
     for (size_t i = 0; i < student_actions.size(); ++i) {
         if (student_actions[i].side == Side::Top) {
             top.push_back(student_actions[i].name);
