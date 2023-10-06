@@ -3,8 +3,9 @@
 #include <algorithm>
 
 bool CmpByScore(const Applicant& a, const Applicant& b) {
-    return std::tie(b.points, a.student.birth_date.year, a.student.birth_date.month, a.student.birth_date.day, a.student.name) < 
-                std::tie(a.points, b.student.birth_date.year, b.student.birth_date.month, b.student.birth_date.day, b.student.name);
+    return std::tie(b.points, a.student.birth_date.year, a.student.birth_date.month, a.student.birth_date.day,
+                    a.student.name) < std::tie(a.points, b.student.birth_date.year, b.student.birth_date.month,
+                                               b.student.birth_date.day, b.student.name);
 }
 
 AdmissionTable FillUniversities(const std::vector<University>& universities, const std::vector<Applicant>& applicants) {
