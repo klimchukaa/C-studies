@@ -21,6 +21,15 @@ AdmissionTable FillUniversities(const std::vector<University>& universities, con
     for (size_t i = 0; i < universities.size(); ++i) {
         available_places[universities[i].name] = universities[i].max_students;
     }
+    for (size_t i = 0; i < applicants_sorted.size(); ++i) {
+        for (size_t j = 0; j < applicants_sorted[i].wish_list.size(); ++j) {
+            if (available_places[applicants_sorted[i].wish_list[j]] > 0) {
+                admission_table[applicants_sorted[i].wish_list[j]].emplace_back(applicants_sorted[i].student);
+                --available_places[applicants_sorted[i].wish_list[j]];
+                break;
+            }
+        }
+    }
     for (size_t i = 0; i < universities.size(); ++i) {
         std::sort(admission_table[universities[i].name].begin(), admission_table[universities[i].name].end(),
                   CmpByName);
