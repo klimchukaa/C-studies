@@ -32,7 +32,7 @@ ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
             if (request_closed && task_accepted) {
                 score_table[sorted_events[i]->student_name].insert(sorted_events[i]->task_name);
                 request_closed = true;
-                task_accepted = true;
+                task_accepted = false;
             }
         }
     }
