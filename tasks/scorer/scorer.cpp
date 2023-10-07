@@ -16,7 +16,7 @@ ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
     std::sort(sorted_events.begin(), sorted_events.end(), CmpByStudent);
     ScoreTable score_table;
     bool request_closed = true;
-    bool task_accepted = true;
+    bool task_accepted = false;
     for (size_t i = 0; i < sorted_events.size(); ++i) {
         if (sorted_events[i]->event_type == EventType::CheckFailed) {
             task_accepted = false;
