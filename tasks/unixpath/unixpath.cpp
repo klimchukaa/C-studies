@@ -17,7 +17,7 @@ std::string NormalizePath(std::string_view current_working_dir, std::string_view
         } else if (path[i] != '/') {
             if (i > 0 && path[i - 1] == '/') {
                 cur.append(1, '/');
-            } 
+            }
             cur.append(1, path[i]);
         }
     }
