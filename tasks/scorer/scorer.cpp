@@ -31,7 +31,9 @@ ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
         if (i + 1 == sorted_events.size() || 
             sorted_events[i]->student_name != sorted_events[i + 1]->student_name ||
             sorted_events[i]->task_name != sorted_events[i + 1]->task_name) {
-            score_table[sorted_events[i]->student_name].insert(sorted_events[i]->task_name);
+            if (request_closed && task_accepted) {
+                score_table[sorted_events[i]->student_name].insert(sorted_events[i]->task_name);
+            }
         }
     }
     return score_table;
