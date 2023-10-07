@@ -15,7 +15,7 @@ std::string NormalizePath(std::string_view current_working_dir, std::string_view
                 while (cur[cur.size() - 1] != '/') {
                     cur.erase(cur.size() - 1);
                 }
-                if (path.size() != 1) {
+                if (cur.size() != 1) {
                     cur.erase(cur.size() - 1);
                 }
             }
