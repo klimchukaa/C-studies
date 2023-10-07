@@ -15,22 +15,24 @@ ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
     }
     std::sort(sorted_events.begin(), sorted_events.end(), CmpByStudent);
     ScoreTable score_table;
-    bool request_closed = 1;
-    bool task_accepted = 1;
+    bool request_closed = true;
+    bool task_accepted = true;
     for (size_t i = 0; i < sorted_events.size(); ++i) {
         if (sorted_events[i]->event_type == EventType::CheckFailed) {
-            task_accepted = 0;
+            task_accepted = false;
         } else if (sorted_events[i]->event_type == EventType::CheckSuccess) {
-            task_accepted = 1;
+            task_accepted = true;
         } else if (sorted_events[i]->event_type == EventType::MergeRequestClosed) {
-            request_closed = 1;
+            request_closed = true;
         } else {
-            request_closed = 0;
+            request_closed = false;
         }
         if (i + 1 == sorted_events.size() || sorted_events[i]->student_name != sorted_events[i + 1]->student_name ||
             sorted_events[i]->task_name != sorted_events[i + 1]->task_name) {
             if (request_closed && task_accepted) {
                 score_table[sorted_events[i]->student_name].insert(sorted_events[i]->task_name);
+                request_closed = true;
+                task_accepted = true;
             }
         }
     }
