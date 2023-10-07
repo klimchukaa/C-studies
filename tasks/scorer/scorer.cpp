@@ -18,13 +18,11 @@ ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
     bool request_closed = true;
     bool task_accepted = false;
     for (size_t i = 0; i < sorted_events.size(); ++i) {
-        if (sorted_events[i]->event_type == EventType::CheckFailed) {
-            task_accepted = false;
-        } else if (sorted_events[i]->event_type == EventType::CheckSuccess) {
+        if (sorted_events[i]->event_type == EventType::CheckSuccess) {
             task_accepted = true;
         } else if (sorted_events[i]->event_type == EventType::MergeRequestClosed) {
             request_closed = true;
-        } else {
+        } else if (sorted_events[i]->event_type == EventType::MergeRequestOpen) {
             request_closed = false;
         }
         if (i + 1 == sorted_events.size() || sorted_events[i]->student_name != sorted_events[i + 1]->student_name ||
