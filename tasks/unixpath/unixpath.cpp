@@ -12,18 +12,18 @@ std::string NormalizePath(std::string_view current_working_dir, std::string_view
     for (size_t i = 0; i < path.size(); ++i) {
         if (path[i] == '.') {
             if (i + 1 != path.size() && path[i + 1] == '.') {
-                while (cur[cur.size() - 1] != '/') {
-                    cur.erase(cur.size() - 1);
+                while (cur.back() != '/') {
+                    cur.pop_back();
                 }
                 if (cur.size() != 1) {
-                    cur.erase(cur.size() - 1);
+                    cur.pop_back();
                 }
             }
         } else if (path[i] != '/') {
-            if (i > 0 && path[i - 1] == '/' && cur[cur.size() - 1] != '/') {
-                cur.append(1, '/');
+            if (i > 0 && path[i - 1] == '/' && cur.back() != '/') {
+                cur.push_back('/');
             }
-            cur.append(1, path[i]);
+            cur.push_back(path[i]);
         }
     }
     return cur;
