@@ -2,6 +2,10 @@
 #include <numeric>
 #include <string>
 
+enum class PartOfRational{
+    Numerator, Denominator
+};
+
 Rational::Rational() {
     numer_ = 0;
     denom_ = 1;
@@ -68,7 +72,35 @@ Rational& operator--(Rational& ratio) {
 }
 
 std::istream& operator>>(std::istream& is, Rational& ratio) {
-    std::cin >> ratio.numer_ >> ratio.denom_;
+    std::string input;
+    std::cin >> input;
+    int64_t numer = 0;
+    int64_t denom = 0;
+    size_t first_digit = 0;
+    if (input[0] == '-') {
+        ++first_digit;
+    }
+    PartOfRational digit_of = PartOfRational::Numerator;
+    for (size_t i = first_digit; i < input.size(); ++i) {
+        if (input[i] == '/') {
+            digit_of = PartOfRational::Denominator;
+            continue;
+        }
+        if (digit_of == PartOfRational::Numerator) {
+            numer *= 10;
+            numer += (input[i] - '0');
+        } else {
+            denom *= 10;
+            denom += (input[i] - '0');
+        }
+    }
+    if (digit_of == PartOfRational::Numerator) {
+        denom = 1;
+    }
+    if (first_digit == 1) {
+        numer = -numer;
+    }
+    ratio.Set(numer, denom);
     return is;
 }
 
