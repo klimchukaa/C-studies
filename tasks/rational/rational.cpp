@@ -112,6 +112,10 @@ std::istream& operator>>(std::istream& is, Rational& ratio) {
     if (digit_of == PartOfRational::Numerator) {
         denom = 1;
     }
+    if (denom_sign == -1) {
+        denom_sign *= -1;
+        numer_sign *= -1;
+    }
     ratio.Set(numer * numer_sign, denom * denom_sign);
     return is;
 }
