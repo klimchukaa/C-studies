@@ -13,8 +13,7 @@ Stack::~Stack() {
 }
 
 void Stack::Push(int32_t value) {
-    Node new_head(value, head_);
-    head_ = &new_head;
+    head_ = new Node(value, head_);;
     ++size_;
 }
 
@@ -27,6 +26,9 @@ void Stack::Pop() {
 }
 
 int32_t Stack::Top() const {
+    if (size_ == 0) {
+        return 0;
+    }
     return head_->value;
 }
 
