@@ -19,6 +19,9 @@ Rational::Rational(int numer, int denom) : numer_{numer}, denom_{denom} {
     if (denom == 0) {
         throw RationalDivisionByZero{};
     }
+    int gcd = std::gcd(denom_, numer_);
+    numer_ /= gcd;
+    denom_ /= gcd;
 }
 
 int Rational::GetNumerator() const {
@@ -31,6 +34,9 @@ int Rational::GetDenominator() const {
 
 void Rational::SetNumerator(int value) {
     numer_ = value;
+    int gcd = std::gcd(denom_, numer_);
+    numer_ /= gcd;
+    denom_ /= gcd;
 }
 
 void Rational::SetDenominator(int value) {
@@ -38,6 +44,9 @@ void Rational::SetDenominator(int value) {
         throw RationalDivisionByZero{};
     }
     denom_ = value;
+    int gcd = std::gcd(denom_, numer_);
+    numer_ /= gcd;
+    denom_ /= gcd;
 }
 
 Rational& operator+=(Rational& lhs, const Rational& rhs) {
