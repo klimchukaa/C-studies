@@ -2,9 +2,7 @@
 #include <numeric>
 #include <string>
 
-enum class PartOfRational{
-    Numerator, Denominator
-};
+enum class PartOfRational{ Numerator, Denominator };
 
 Rational::Rational() {
     numer_ = 0;
