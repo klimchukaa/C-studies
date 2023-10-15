@@ -2,6 +2,8 @@
 #include <numeric>
 #include <string>
 
+const int64_t DECIMAL_BASE = 10;
+
 enum class PartOfRational { Numerator, Denominator };
 
 Rational::Rational() {
@@ -85,10 +87,10 @@ std::istream& operator>>(std::istream& is, Rational& ratio) {
             continue;
         }
         if (digit_of == PartOfRational::Numerator) {
-            numer *= 10;
+            numer *= DECIMAL_BASE;
             numer += (input[i] - '0');
         } else {
-            denom *= 10;
+            denom *= DECIMAL_BASE;
             denom += (input[i] - '0');
         }
     }
