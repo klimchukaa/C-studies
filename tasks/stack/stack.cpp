@@ -19,6 +19,9 @@ void Stack::Push(int32_t value) {
 }
 
 void Stack::Pop() {
+    if (size_ == 0) {
+        return;
+    }
     head_ = head_->previous;
     --size_;
 }
