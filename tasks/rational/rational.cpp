@@ -37,8 +37,8 @@ void Rational::SetDenominator(int value) {
 }
 
 Rational& operator+=(Rational& lhs, const Rational& rhs) {
-    int64_t new_numer = static_cast<int64_t>(lhs.GetDenominator()) * static_cast<int64_t>(rhs.GetNumerator())
-                        + static_cast<int64_t>(rhs.GetDenominator()) * static_cast<int64_t>(lhs.GetNumerator());
+    int64_t new_numer = static_cast<int64_t>(lhs.GetDenominator()) * static_cast<int64_t>(rhs.GetNumerator()) +
+                        static_cast<int64_t>(rhs.GetDenominator()) * static_cast<int64_t>(lhs.GetNumerator());
     int64_t new_denom = static_cast<int64_t>(lhs.GetDenominator()) * static_cast<int64_t>(rhs.GetDenominator());
     int gcd = std::gcd(new_denom, new_numer);
     new_numer /= gcd;
