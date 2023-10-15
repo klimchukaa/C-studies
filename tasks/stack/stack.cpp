@@ -22,7 +22,9 @@ void Stack::Pop() {
     if (size_ == 0) {
         return;
     }
+    Node* current = head_;
     head_ = head_->previous;
+    delete current;
     --size_;
 }
 
