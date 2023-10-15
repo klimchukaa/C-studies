@@ -119,6 +119,9 @@ void Rational::Set(int64_t numer, int64_t denom) {
     }
     numer_ = static_cast<int>(numer);
     denom_ = static_cast<int>(denom);
+    int gcd = std::gcd(denom_, numer_);
+    numer_ /= gcd;
+    denom_ /= gcd;
 }
 
 Rational operator+(const Rational& ratio) {
