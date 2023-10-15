@@ -85,20 +85,26 @@ std::istream& operator>>(std::istream& is, Rational& ratio) {
     std::cin >> input;
     int64_t numer = 0;
     int64_t denom = 0;
-    size_t first_digit = 0;
-    if (input[0] == '-') {
-        ++first_digit;
-    }
+    int64_t numer_sign = 1;
+    int64_t denom_sign = 1;
     PartOfRational digit_of = PartOfRational::Numerator;
-    for (size_t i = first_digit; i < input.size(); ++i) {
+    for (size_t i = 0; i < input.size(); ++i) {
         if (input[i] == '/') {
             digit_of = PartOfRational::Denominator;
             continue;
         }
         if (digit_of == PartOfRational::Numerator) {
+            if (input[i] == '-') {
+                numer_sign = -1;
+                continue;
+            }
             numer *= DECIMAL_BASE;
             numer += (input[i] - '0');
         } else {
+            if (input[i] == '-') {
+                denom_sign = -1;
+                continue;
+            }
             denom *= DECIMAL_BASE;
             denom += (input[i] - '0');
         }
@@ -106,10 +112,7 @@ std::istream& operator>>(std::istream& is, Rational& ratio) {
     if (digit_of == PartOfRational::Numerator) {
         denom = 1;
     }
-    if (first_digit == 1) {
-        numer = -numer;
-    }
-    ratio.Set(numer, denom);
+    ratio.Set(numer * numer_sign, denom * denom_sign);
     return is;
 }
 
