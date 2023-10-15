@@ -1,6 +1,6 @@
 #include "queue.h"
 
-Node::Node(int32_t value, Node* previous) : value{value}, next{next} {
+Node::Node(int32_t value, Node* next) : value{value}, next{next} {
 }
 
 Queue::Queue() {
