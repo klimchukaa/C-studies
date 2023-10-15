@@ -13,7 +13,8 @@ Stack::~Stack() {
 }
 
 void Stack::Push(int32_t value) {
-    head_ = new Node(value, head_);
+    Node new_head(value, head_);
+    head_ = &new_head;
     ++size_;
 }
 
