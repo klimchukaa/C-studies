@@ -5,11 +5,6 @@
 #include <cmath>
 #include <algorithm>
 
-struct Subsegment {
-    size_t begin;
-    size_t len;
-};
-
 struct WeighedString {
     size_t index;
     double tf_idf;
@@ -35,7 +30,7 @@ bool StringsComp(const WeighedString& a, const WeighedString& b) {
     return a.tf_idf > b.tf_idf || (a.tf_idf == b.tf_idf && a.index < b.index);
 }
 
-void PickoutWords(const std::string_view& text, std::vector<Subsegment>& words) {
+void PickoutWords(const std::string_view& text, std::vector<std::string_view>& words) {
     size_t left = -1;
     size_t right = -1;
     for (size_t i = 0; i < text.size(); ++i) {
@@ -46,51 +41,47 @@ void PickoutWords(const std::string_view& text, std::vector<Subsegment>& words) 
             }
         } else {
             if (left != -1) {
-                words.push_back({left, right - left + 1});
+                words.push_back(text.substr(left, right - left + 1));
                 left = -1;
                 right = -1;
             }
         }
     }
     if (left != -1) {
-        words.push_back({left, right - left + 1});
+        words.push_back(text.substr(left, right - left + 1));
         left = -1;
         right = -1;
     }
 }
 
-void PickoutStrings(const std::string_view& text, std::vector<Subsegment>& strings) {
+void PickoutStrings(const std::string_view& text, std::vector<std::string_view>& strings) {
     size_t first_ind = 0;
     for (size_t i = 0; i < text.size(); ++i) {
         if (text[i] == '\n') {
-            strings.push_back({first_ind, i - first_ind});
+            strings.push_back(text.substr(first_ind, i - first_ind));
             first_ind = i + 1;
         }
     }
     if (first_ind < text.size()) {
-        strings.push_back({first_ind, text.size() - first_ind});
+        strings.push_back(text.substr(first_ind, text.size() - first_ind));
     }
 }
 
 std::vector<std::string_view> Search(std::string_view text, std::string_view query, size_t results_count) {
-    std::vector<Subsegment> words;
-    std::vector<Subsegment> strings;
+    std::vector<std::string_view> words;
+    std::vector<std::string_view> strings;
     PickoutWords(query, words);
     PickoutStrings(text, strings);
     std::vector<size_t> count(words.size(), 0);
     std::vector<size_t> number_of_words(strings.size(), 0);
     std::vector<std::vector<size_t>> occurences(strings.size(), std::vector<size_t>(words.size(), 0));
     for (size_t string = 0; string < strings.size(); ++string) {
-        const auto& [begin, len] = strings[string];
-        std::vector<Subsegment> words_in_string;
-        PickoutWords(text.substr(begin, len), words_in_string);
+        std::vector<std::string_view> words_in_string;
+        PickoutWords(strings[string], words_in_string);
         number_of_words[string] = words_in_string.size();
         for (size_t unique_word = 0; unique_word < words.size(); ++unique_word) {
-            const auto& [begin_of_query_word, len_of_query_word] = words[unique_word];
             for (size_t word = 0; word < words_in_string.size(); ++word) {
-                const auto& [begin_of_the_word, len_of_the_word] = words_in_string[word];
-                if (CaseEqual(text.substr(begin_of_the_word + begin, len_of_the_word),
-                              query.substr(begin_of_query_word, len_of_query_word))) {
+                if (CaseEqual(words_in_string[word], words[unique_word])) {
                     if (occurences[string][unique_word] == 0) {
                         ++count[unique_word];
                     }
@@ -125,7 +116,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         if (tf_idf[i].tf_idf == 0) {
             break;
         }
-        result.push_back(text.substr(strings[tf_idf[i].index].begin, strings[tf_idf[i].index].len));
+        result.push_back(strings[tf_idf[i].index]);
     }
     return result;
 }
