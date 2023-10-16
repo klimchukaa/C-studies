@@ -1,11 +1,6 @@
 #include "rational.h"
 
-#include <numeric>
-#include <string>
-
 const int64_t DECIMAL_BASE = 10;
-
-enum class PartOfRational { Numerator, Denominator };
 
 void MakeStandardRational(int& numer, int& denom) {
     int gcd = std::gcd(denom, numer);
@@ -88,38 +83,15 @@ Rational& operator--(Rational& ratio) {
 }
 
 std::istream& operator>>(std::istream& is, Rational& ratio) {
-    std::string input;
-    is >> input;
-    int64_t numer = 0;
-    int64_t denom = 0;
-    int64_t numer_sign = 1;
-    int64_t denom_sign = 1;
-    PartOfRational digit_of = PartOfRational::Numerator;
-    for (size_t i = 0; i < input.size(); ++i) {
-        if (input[i] == '/') {
-            digit_of = PartOfRational::Denominator;
-            continue;
-        }
-        if (digit_of == PartOfRational::Numerator) {
-            if (input[i] == '-') {
-                numer_sign = -1;
-                continue;
-            }
-            numer *= DECIMAL_BASE;
-            numer += (input[i] - '0');
-        } else {
-            if (input[i] == '-') {
-                denom_sign = -1;
-                continue;
-            }
-            denom *= DECIMAL_BASE;
-            denom += (input[i] - '0');
-        }
+    int64_t numer;
+    is >> numer;
+    int64_t denom = 1;
+    if (is.get() == '/') {
+        char slash;
+        is >> slash;
+        is >> denom;
     }
-    if (digit_of == PartOfRational::Numerator) {
-        denom = 1;
-    }
-    ratio.Set(numer * numer_sign, denom * denom_sign);
+    ratio.Set(numer, denom);
     return is;
 }
 
