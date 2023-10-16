@@ -1,4 +1,5 @@
 #include "rational.h"
+
 #include <numeric>
 #include <string>
 
@@ -90,7 +91,7 @@ Rational& operator--(Rational& ratio) {
 
 std::istream& operator>>(std::istream& is, Rational& ratio) {
     std::string input;
-    std::cin >> input;
+    is >> input;
     int64_t numer = 0;
     int64_t denom = 0;
     int64_t numer_sign = 1;
@@ -221,9 +222,9 @@ bool operator!=(const Rational& lhs, const Rational& rhs) {
 
 std::ostream& operator<<(std::ostream& os, const Rational& ratio) {
     if (ratio.GetDenominator() == 1) {
-        std::cout << ratio.GetNumerator();
+        os << ratio.GetNumerator();
         return os;
     }
-    std::cout << ratio.GetNumerator() << "/" << ratio.GetDenominator();
+    os << ratio.GetNumerator() << "/" << ratio.GetDenominator();
     return os;
 }
