@@ -86,7 +86,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         const auto& [begin, len] = strings[string];
         std::vector<Subsegment> words_in_string;
         PickoutWords(text.substr(begin, len), words_in_string);
-        number_of_words[string] = words_in_string.size();
+        number_of_words[string] = static_cast<int>(words_in_string.size());
         for (size_t unique_word = 0; unique_word < words.size(); ++unique_word) {
             const auto& [begin_of_query_word, len_of_query_word] = words[unique_word];
             for (size_t word = 0; word < words_in_string.size(); ++word) {
