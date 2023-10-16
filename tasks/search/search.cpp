@@ -31,26 +31,27 @@ bool StringsComp(const WeighedString& a, const WeighedString& b) {
 }
 
 void PickoutWords(const std::string_view& text, std::vector<std::string_view>& words) {
-    size_t left = -1;
-    size_t right = -1;
+    size_t left = 0;
+    size_t right = 0;
+    bool now_word = false;
     for (size_t i = 0; i < text.size(); ++i) {
         if (std::isalpha(text[i])) {
             right = i;
-            if (left == -1) {
+            if (now_word == false) {
                 left = i;
+                now_word = true;
             }
         } else {
-            if (left != -1) {
+            if (now_word == true) {
                 words.push_back(text.substr(left, right - left + 1));
-                left = -1;
-                right = -1;
+                left = 0;
+                right = 0;
+                now_word = false;
             }
         }
     }
-    if (left != -1) {
+    if (now_word == true) {
         words.push_back(text.substr(left, right - left + 1));
-        left = -1;
-        right = -1;
     }
 }
 
