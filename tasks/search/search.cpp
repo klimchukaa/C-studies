@@ -75,10 +75,14 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     std::vector<size_t> count(words.size(), 0);
     std::vector<size_t> number_of_words(strings.size(), 0);
     std::vector<std::vector<size_t>> occurences(strings.size(), std::vector<size_t>(words.size(), 0));
+    size_t empty_strings = 0;
     for (size_t string = 0; string < strings.size(); ++string) {
         std::vector<std::string_view> words_in_string;
         PickoutWords(strings[string], words_in_string);
         number_of_words[string] = words_in_string.size();
+        if (number_of_words[string] == 0) {
+            ++empty_strings;
+        }
         for (size_t unique_word = 0; unique_word < words.size(); ++unique_word) {
             for (size_t word = 0; word < words_in_string.size(); ++word) {
                 if (CaseEqual(words_in_string[word], words[unique_word])) {
@@ -97,7 +101,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     for (size_t w = 0; w < words.size(); ++w) {
         double word_freq = 0;
         if (count[w] != 0) {
-            word_freq = std::log(static_cast<double>(strings.size()) / static_cast<double>(count[w]));
+            word_freq = std::log(static_cast<double>(strings.size() - empty_strings) / static_cast<double>(count[w]));
         }
         for (size_t s = 0; s < strings.size(); ++s) {
             if (number_of_words[s] == 0) {
