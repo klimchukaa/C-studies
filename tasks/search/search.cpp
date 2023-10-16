@@ -5,8 +5,6 @@
 #include <cmath>
 #include <algorithm>
 
-const double EPS = 1e-9;
-
 struct Subsegment {
     size_t begin;
     size_t len;
@@ -34,7 +32,7 @@ bool CaseEqual(const std::string_view& a, const std::string_view& b) {
 }
 
 bool StringsComp(const WeighedString& a, const WeighedString& b) {
-    return a.tf_idf - b.tf_idf > EPS || (std::abs(a.tf_idf - b.tf_idf) <= EPS && a.index < b.index);
+    return a.tf_idf - b.tf_idf > 0 || (a.tf_idf == b.tf_idf && a.index < b.index);
 }
 
 void PickoutWords(const std::string_view& text, std::vector<Subsegment>& words) {
@@ -129,7 +127,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         if (i == strings.size()) {
             break;
         }
-        if (tf_idf[i].tf_idf <= EPS) {
+        if (tf_idf[i].tf_idf == 0) {
             break;
         }
         result.push_back(text.substr(strings[tf_idf[i].index].begin, strings[tf_idf[i].index].len));
