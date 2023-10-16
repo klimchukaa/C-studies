@@ -32,7 +32,7 @@ bool CaseEqual(const std::string_view& a, const std::string_view& b) {
 }
 
 bool StringsComp(const WeighedString& a, const WeighedString& b) {
-    return a.tf_idf - b.tf_idf > 0 || (a.tf_idf == b.tf_idf && a.index < b.index);
+    return a.tf_idf > b.tf_idf || (a.tf_idf == b.tf_idf && a.index < b.index);
 }
 
 void PickoutWords(const std::string_view& text, std::vector<Subsegment>& words) {
