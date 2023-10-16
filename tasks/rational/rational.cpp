@@ -16,7 +16,7 @@ void MakeStandardRational(int& numer, int& denom) {
 }
 
 void MakeStandardRational(int64_t& numer, int64_t& denom) {
-    int gcd = std::gcd(denom, numer);
+    int64_t gcd = std::gcd(denom, numer);
     if (denom < 0) {
         gcd *= -1;
     }
