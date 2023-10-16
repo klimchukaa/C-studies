@@ -61,7 +61,7 @@ void PickoutWords(const std::string_view& text, std::vector<Subsegment>& words) 
     }
 }
 
-void PickoutStrings(const std::string_view& text, std::vector<Subsegment> strings) {
+void PickoutStrings(const std::string_view& text, std::vector<Subsegment>& strings) {
     size_t first_ind = 0;
     for (size_t i = 0; i < text.size(); ++i) {
         if (text[i] == '\n') {
@@ -70,7 +70,7 @@ void PickoutStrings(const std::string_view& text, std::vector<Subsegment> string
         }
     }
     if (first_ind < text.size()) {
-        strings.push_back({first_ind, text.size() - first_ind - 1});
+        strings.push_back({first_ind, text.size() - first_ind});
     }
 }
 
@@ -82,6 +82,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     std::vector<int> count(words.size(), 0);
     std::vector<int> number_of_words(strings.size(), 0);
     std::vector<std::vector<int>> occurences(strings.size(), std::vector<int>(words.size(), 0));
+    int pref = 0;
     for (size_t string = 0; string < strings.size(); ++string) {
         const auto& [begin, len] = strings[string];
         std::vector<Subsegment> words_in_string;
@@ -91,15 +92,16 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             const auto& [begin_of_query_word, len_of_query_word] = words[unique_word];
             for (size_t word = 0; word < words_in_string.size(); ++word) {
                 const auto& [begin_of_the_word, len_of_the_word] = words_in_string[word];
-                if (CaseEqual(text.substr(begin_of_the_word, len_of_the_word),
+                if (CaseEqual(text.substr(begin_of_the_word + pref, len_of_the_word),
                               query.substr(begin_of_query_word, len_of_query_word))) {
-                    if (occurences[string][word] == 0) {
-                        ++count[word];
+                    if (occurences[string][unique_word] == 0) {
+                        ++count[unique_word];
                     }
-                    ++occurences[string][word];
+                    ++occurences[string][unique_word];
                 }
             }
         }
+        pref += (len + 1);
     }
     std::vector<WeighedString> tf_idf(strings.size());
     for (size_t w = 0; w < words.size(); ++w) {
