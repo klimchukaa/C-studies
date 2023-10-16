@@ -6,6 +6,24 @@ const int64_t DECIMAL_BASE = 10;
 
 enum class PartOfRational { Numerator, Denominator };
 
+void MakeStandardRational(int& numer, int& denom) {
+    int gcd = std::gcd(denom, numer);
+    if (denom < 0) {
+        gcd *= -1;
+    }
+    numer /= gcd;
+    denom /= gcd;
+}
+
+void MakeStandardRational(int64_t& numer, int64_t& denom) {
+    int gcd = std::gcd(denom, numer);
+    if (denom < 0) {
+        gcd *= -1;
+    }
+    numer /= gcd;
+    denom /= gcd;
+}
+
 Rational::Rational() {
     numer_ = 0;
     denom_ = 1;
@@ -19,9 +37,7 @@ Rational::Rational(int numer, int denom) : numer_{numer}, denom_{denom} {
     if (denom == 0) {
         throw RationalDivisionByZero{};
     }
-    int gcd = std::gcd(denom_, numer_);
-    numer_ /= gcd;
-    denom_ /= gcd;
+    MakeStandardRational(numer_, denom_);
 }
 
 int Rational::GetNumerator() const {
@@ -34,9 +50,7 @@ int Rational::GetDenominator() const {
 
 void Rational::SetNumerator(int value) {
     numer_ = value;
-    int gcd = std::gcd(denom_, numer_);
-    numer_ /= gcd;
-    denom_ /= gcd;
+    MakeStandardRational(numer_, denom_);
 }
 
 void Rational::SetDenominator(int value) {
@@ -44,18 +58,14 @@ void Rational::SetDenominator(int value) {
         throw RationalDivisionByZero{};
     }
     denom_ = value;
-    int gcd = std::gcd(denom_, numer_);
-    numer_ /= gcd;
-    denom_ /= gcd;
+    MakeStandardRational(numer_, denom_);
 }
 
 Rational& operator+=(Rational& lhs, const Rational& rhs) {
     int64_t new_numer = static_cast<int64_t>(lhs.GetDenominator()) * static_cast<int64_t>(rhs.GetNumerator()) +
                         static_cast<int64_t>(rhs.GetDenominator()) * static_cast<int64_t>(lhs.GetNumerator());
     int64_t new_denom = static_cast<int64_t>(lhs.GetDenominator()) * static_cast<int64_t>(rhs.GetDenominator());
-    int64_t gcd = std::gcd(new_denom, new_numer);
-    new_numer /= gcd;
-    new_denom /= gcd;
+    MakeStandardRational(new_numer, new_denom);
     lhs.Set(new_numer, new_denom);
     return lhs;
 }
@@ -63,9 +73,7 @@ Rational& operator+=(Rational& lhs, const Rational& rhs) {
 Rational& operator*=(Rational& lhs, const Rational& rhs) {
     int64_t new_numer = static_cast<int64_t>(lhs.GetNumerator()) * static_cast<int64_t>(rhs.GetNumerator());
     int64_t new_denom = static_cast<int64_t>(lhs.GetDenominator()) * static_cast<int64_t>(rhs.GetDenominator());
-    int64_t gcd = std::gcd(new_denom, new_numer);
-    new_numer /= gcd;
-    new_denom /= gcd;
+    MakeStandardRational(new_numer, new_denom);
     lhs.Set(new_numer, new_denom);
     return lhs;
 }
@@ -112,10 +120,6 @@ std::istream& operator>>(std::istream& is, Rational& ratio) {
     if (digit_of == PartOfRational::Numerator) {
         denom = 1;
     }
-    if (denom_sign == -1) {
-        denom_sign *= -1;
-        numer_sign *= -1;
-    }
     ratio.Set(numer * numer_sign, denom * denom_sign);
     return is;
 }
@@ -126,9 +130,7 @@ void Rational::Set(int64_t numer, int64_t denom) {
     }
     numer_ = static_cast<int>(numer);
     denom_ = static_cast<int>(denom);
-    int gcd = std::gcd(denom_, numer_);
-    numer_ /= gcd;
-    denom_ /= gcd;
+    MakeStandardRational(numer_, denom_);
 }
 
 Rational operator+(const Rational& ratio) {
