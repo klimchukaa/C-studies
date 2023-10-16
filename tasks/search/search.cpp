@@ -79,15 +79,15 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     std::vector<Subsegment> strings;
     PickoutWords(query, words);
     PickoutStrings(text, strings);
-    std::vector<int> count(words.size(), 0);
-    std::vector<int> number_of_words(strings.size(), 0);
-    std::vector<std::vector<int>> occurences(strings.size(), std::vector<int>(words.size(), 0));
+    std::vector<size_t> count(words.size(), 0);
+    std::vector<size_t> number_of_words(strings.size(), 0);
+    std::vector<std::vector<size_t>> occurences(strings.size(), std::vector<size_t>(words.size(), 0));
     int pref = 0;
     for (size_t string = 0; string < strings.size(); ++string) {
         const auto& [begin, len] = strings[string];
         std::vector<Subsegment> words_in_string;
         PickoutWords(text.substr(begin, len), words_in_string);
-        number_of_words[string] = static_cast<int>(words_in_string.size());
+        number_of_words[string] = words_in_string.size();
         for (size_t unique_word = 0; unique_word < words.size(); ++unique_word) {
             const auto& [begin_of_query_word, len_of_query_word] = words[unique_word];
             for (size_t word = 0; word < words_in_string.size(); ++word) {
@@ -104,23 +104,32 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         pref += (static_cast<int>(len) + 1);
     }
     std::vector<WeighedString> tf_idf(strings.size());
+    for (size_t s = 0; s < strings.size(); ++s) {
+        tf_idf[s].index = s;
+        if (number_of_words[s] == 0) {
+            tf_idf[s].index = strings.size();
+        }
+    }
     for (size_t w = 0; w < words.size(); ++w) {
         double word_freq = 0;
         if (count[w] != 0) {
             word_freq = std::log(static_cast<double>(strings.size()) / static_cast<double>(count[w]));
         }
         for (size_t s = 0; s < strings.size(); ++s) {
+            if (tf_idf[s].index == strings.size()) {
+                continue;
+            }
             tf_idf[s].tf_idf +=
                 static_cast<double>(occurences[s][w]) / static_cast<double>(number_of_words[s]) * word_freq;
         }
-    }
-    for (size_t s = 0; s < strings.size(); ++s) {
-        tf_idf[s].index = s;
     }
     std::sort(tf_idf.begin(), tf_idf.end(), StringsComp);
     std::vector<std::string_view> result;
     for (size_t i = 0; i < results_count; ++i) {
         if (i == strings.size()) {
+            break;
+        }
+        if (tf_idf[i].tf_idf <= EPS) {
             break;
         }
         result.push_back(text.substr(strings[tf_idf[i].index].begin, strings[tf_idf[i].index].len));
