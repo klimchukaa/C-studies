@@ -91,7 +91,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             const auto& [begin_of_query_word, len_of_query_word] = words[unique_word];
             for (size_t word = 0; word < words_in_string.size(); ++word) {
                 const auto& [begin_of_the_word, len_of_the_word] = words_in_string[word];
-                if (CaseEqual(text.substr(begin_of_the_word, len_of_the_word), 
+                if (CaseEqual(text.substr(begin_of_the_word, len_of_the_word),
                               query.substr(begin_of_query_word, len_of_query_word))) {
                     if (occurences[string][word] == 0) {
                         ++count[word];
@@ -105,7 +105,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     for (size_t w = 0; w < words.size(); ++w) {
         double word_freq = std::log(static_cast<double>(strings.size()) / static_cast<double>(count[w]));
         for (size_t s = 0; s < strings.size(); ++s) {
-            tf_idf[s].tf_idf += 
+            tf_idf[s].tf_idf +=
                 static_cast<double>(occurences[s][w]) / static_cast<double>(number_of_words[s]) * word_freq;
         }
     }
