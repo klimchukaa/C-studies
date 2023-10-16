@@ -129,9 +129,9 @@ void Rational::Set(int64_t numer, int64_t denom) {
     if (denom == 0) {
         throw RationalDivisionByZero{};
     }
+    MakeStandardRational(numer_, denom_);
     numer_ = static_cast<int>(numer);
     denom_ = static_cast<int>(denom);
-    MakeStandardRational(numer_, denom_);
 }
 
 Rational operator+(const Rational& ratio) {
