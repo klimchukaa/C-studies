@@ -1,7 +1,5 @@
 #include "rational.h"
 
-const int64_t DECIMAL_BASE = 10;
-
 void MakeStandardRational(int& numer, int& denom) {
     int gcd = std::gcd(denom, numer);
     if (denom < 0) {
@@ -84,11 +82,8 @@ Rational& operator--(Rational& ratio) {
 
 std::istream& operator>>(std::istream& is, Rational& ratio) {
     int64_t numer;
-    is >> numer;
     int64_t denom = 1;
-    if (is.get() == '/') {
-        char slash;
-        is >> slash;
+    if ((is >> numer).get() == '/') {
         is >> denom;
     }
     ratio.Set(numer, denom);
