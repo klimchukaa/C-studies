@@ -81,7 +81,7 @@ Rational& operator--(Rational& ratio) {
 }
 
 std::istream& operator>>(std::istream& is, Rational& ratio) {
-    int64_t numer;
+    int64_t numer = 0;
     int64_t denom = 1;
     if ((is >> numer).get() == '/') {
         is >> denom;
