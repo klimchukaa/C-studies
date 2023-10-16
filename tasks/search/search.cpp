@@ -102,9 +102,6 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     std::vector<WeighedString> tf_idf(strings.size());
     for (size_t s = 0; s < strings.size(); ++s) {
         tf_idf[s].index = s;
-        if (number_of_words[s] == 0) {
-            tf_idf[s].index = strings.size();
-        }
     }
     for (size_t w = 0; w < words.size(); ++w) {
         double word_freq = 0;
@@ -112,7 +109,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             word_freq = std::log(static_cast<double>(strings.size()) / static_cast<double>(count[w]));
         }
         for (size_t s = 0; s < strings.size(); ++s) {
-            if (tf_idf[s].index == strings.size()) {
+            if (number_of_words[s] == 0) {
                 continue;
             }
             tf_idf[s].tf_idf +=
