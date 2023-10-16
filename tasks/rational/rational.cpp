@@ -66,7 +66,6 @@ Rational& operator+=(Rational& lhs, const Rational& rhs) {
     int64_t new_numer = static_cast<int64_t>(lhs.GetDenominator()) * static_cast<int64_t>(rhs.GetNumerator()) +
                         static_cast<int64_t>(rhs.GetDenominator()) * static_cast<int64_t>(lhs.GetNumerator());
     int64_t new_denom = static_cast<int64_t>(lhs.GetDenominator()) * static_cast<int64_t>(rhs.GetDenominator());
-    MakeStandardRational(new_numer, new_denom);
     lhs.Set(new_numer, new_denom);
     return lhs;
 }
@@ -74,7 +73,6 @@ Rational& operator+=(Rational& lhs, const Rational& rhs) {
 Rational& operator*=(Rational& lhs, const Rational& rhs) {
     int64_t new_numer = static_cast<int64_t>(lhs.GetNumerator()) * static_cast<int64_t>(rhs.GetNumerator());
     int64_t new_denom = static_cast<int64_t>(lhs.GetDenominator()) * static_cast<int64_t>(rhs.GetDenominator());
-    MakeStandardRational(new_numer, new_denom);
     lhs.Set(new_numer, new_denom);
     return lhs;
 }
@@ -129,7 +127,7 @@ void Rational::Set(int64_t numer, int64_t denom) {
     if (denom == 0) {
         throw RationalDivisionByZero{};
     }
-    MakeStandardRational(numer_, denom_);
+    MakeStandardRational(numer, denom);
     numer_ = static_cast<int>(numer);
     denom_ = static_cast<int>(denom);
 }
