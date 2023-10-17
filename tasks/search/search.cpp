@@ -4,6 +4,7 @@
 #include <cctype>
 #include <cmath>
 #include <algorithm>
+#include <set>
 
 struct WeighedString {
     size_t index;
@@ -53,11 +54,34 @@ void PickoutWords(const std::string_view& text, std::vector<std::string_view>& w
     }
 }
 
+void PickoutWords(const std::string_view& text, std::set<std::string_view>& words) {
+    size_t left = 0;
+    size_t right = 0;
+    bool now_word = false;
+    for (size_t i = 0; i < text.size(); ++i) {
+        if (std::isalpha(text[i])) {
+            right = i;
+            if (now_word == false) {
+                left = i;
+                now_word = true;
+            }
+        } else {
+            if (now_word == true) {
+                words.insert(text.substr(left, right - left + 1));
+                now_word = false;
+            }
+        }
+    }
+    if (now_word == true) {
+        words.insert(text.substr(left, right - left + 1));
+    }
+}
+
 void PickoutStrings(const std::string_view& text, std::vector<std::string_view>& strings) {
     size_t first_ind = 0;
     for (size_t i = 0; i < text.size(); ++i) {
         if (text[i] == '\n') {
-            strings.push_back(text.substr(first_ind, i - first_ind + 1));
+            strings.push_back(text.substr(first_ind, i - first_ind));
             first_ind = i + 1;
         }
     }
@@ -67,7 +91,7 @@ void PickoutStrings(const std::string_view& text, std::vector<std::string_view>&
 }
 
 std::vector<std::string_view> Search(std::string_view text, std::string_view query, size_t results_count) {
-    std::vector<std::string_view> words;
+    std::set<std::string_view> words;
     std::vector<std::string_view> strings;
     PickoutWords(query, words);
     PickoutStrings(text, strings);
@@ -82,9 +106,10 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         if (number_of_words[string] == 0) {
             ++empty_strings;
         }
-        for (size_t unique_word = 0; unique_word < words.size(); ++unique_word) {
+        auto it = words.begin();
+        for (size_t unique_word = 0; unique_word < words.size(); ++unique_word, ++it) {
             for (size_t word = 0; word < words_in_string.size(); ++word) {
-                if (CaseEqual(words_in_string[word], words[unique_word])) {
+                if (CaseEqual(words_in_string[word], *it)) {
                     if (occurences[string][unique_word] == 0) {
                         ++count[unique_word];
                     }
