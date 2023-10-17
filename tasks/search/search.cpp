@@ -19,7 +19,7 @@ bool CaseEqual(const std::string_view& a, const std::string_view& b) {
         return false;
     }
     for (size_t i = 0; i < a.size(); ++i) {
-        if (tolower(a[i]) != tolower(b[i])) {
+        if (std::tolower(a[i]) != std::tolower(b[i])) {
             return false;
         }
     }
@@ -44,8 +44,6 @@ void PickoutWords(const std::string_view& text, std::vector<std::string_view>& w
         } else {
             if (now_word == true) {
                 words.push_back(text.substr(left, right - left + 1));
-                left = 0;
-                right = 0;
                 now_word = false;
             }
         }
