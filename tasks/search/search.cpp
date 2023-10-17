@@ -57,7 +57,7 @@ void PickoutStrings(const std::string_view& text, std::vector<std::string_view>&
     size_t first_ind = 0;
     for (size_t i = 0; i < text.size(); ++i) {
         if (text[i] == '\n') {
-            strings.push_back(text.substr(first_ind, i - first_ind));
+            strings.push_back(text.substr(first_ind, i - first_ind + 1));
             first_ind = i + 1;
         }
     }
