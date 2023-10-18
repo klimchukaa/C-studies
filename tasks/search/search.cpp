@@ -15,7 +15,7 @@ struct WeighedString {
     }
 };
 
-bool CaseEqual(const std::string_view& a, const std::string_view& b) {
+bool CaseEqual(const std::string_view a, const std::string_view b) {
     if (a.size() != b.size()) {
         return false;
     }
@@ -31,7 +31,7 @@ bool StringsComp(const WeighedString& a, const WeighedString& b) {
     return a.tf_idf > b.tf_idf || (a.tf_idf == b.tf_idf && a.index < b.index);
 }
 
-void PickoutWords(const std::string_view& text, std::vector<std::string_view>& words) {
+void PickoutWords(const std::string_view text, std::vector<std::string_view>& words) {
     size_t left = 0;
     size_t right = 0;
     bool now_word = false;
@@ -54,7 +54,7 @@ void PickoutWords(const std::string_view& text, std::vector<std::string_view>& w
     }
 }
 
-void PickoutWords(const std::string_view& text, std::set<std::string_view>& words) {
+void PickoutWords(const std::string_view text, std::set<std::string_view>& words) {
     size_t left = 0;
     size_t right = 0;
     bool now_word = false;
@@ -77,7 +77,7 @@ void PickoutWords(const std::string_view& text, std::set<std::string_view>& word
     }
 }
 
-void PickoutStrings(const std::string_view& text, std::vector<std::string_view>& strings) {
+void PickoutStrings(const std::string_view text, std::vector<std::string_view>& strings) {
     size_t first_ind = 0;
     for (size_t i = 0; i < text.size(); ++i) {
         if (text[i] == '\n') {
